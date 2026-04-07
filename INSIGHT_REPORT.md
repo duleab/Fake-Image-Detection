@@ -1,9 +1,9 @@
-﻿# Fake Image Detection â€” Comprehensive Insight Report
+# Fake Image Detection — Comprehensive Insight Report
 
 > **Project:** AI-Generated Image Detection Using Forensic Deep Learning
-> **Pipeline:** 4-Task Sequential Analysis (EDA â†’ Baseline CNN â†’ Transfer Learning â†’ Explainability)
-> **Dataset:** CIFAKE â€” Real and AI-Generated Synthetic Images
-> **Framework:** PyTorch Â· EfficientNetB0 Â· Grad-CAM
+> **Pipeline:** 4-Task Sequential Analysis (EDA → Baseline CNN → Transfer Learning → Explainability)
+> **Dataset:** CIFAKE — Real and AI-Generated Synthetic Images
+> **Framework:** PyTorch · EfficientNetB0 · Grad-CAM
 
 ---
 
@@ -28,14 +28,14 @@
 
 The rapid advancement of generative AI has made it trivially easy to produce photorealistic synthetic images. Models like Stable Diffusion, DALL-E, and Midjourney can now generate images that are virtually indistinguishable from real photographs to the human eye. This capability, while transformative for creative industries, poses severe risks to information integrity, trust in visual media, and content moderation at scale.
 
-This project develops and evaluates a **deep learning-based forensic pipeline** for detecting AI-generated images. Rather than relying on metadata or watermark-based approachesâ€”which are easily circumventedâ€”the pipeline exploits **intrinsic forensic signals** embedded in the pixel data itself: frequency-domain artifacts, noise residual patterns, and micro-texture differences that fundamentally distinguish camera-captured photographs from neural network outputs.
+This project develops and evaluates a **deep learning-based forensic pipeline** for detecting AI-generated images. Rather than relying on metadata or watermark-based approaches—which are easily circumvented—the pipeline exploits **intrinsic forensic signals** embedded in the pixel data itself: frequency-domain artifacts, noise residual patterns, and micro-texture differences that fundamentally distinguish camera-captured photographs from neural network outputs.
 
 The project follows a rigorous four-task methodology:
 
-1. **Forensic EDA** â€” Identify the physical signals that differentiate real from fake
-2. **Baseline CNN** â€” Establish a performance floor with a scratch-trained model
-3. **Transfer Learning** â€” Leverage ImageNet-pretrained features for superior detection
-4. **Explainability** â€” Validate that the model learns forensically meaningful features
+1. **Forensic EDA** — Identify the physical signals that differentiate real from fake
+2. **Baseline CNN** — Establish a performance floor with a scratch-trained model
+3. **Transfer Learning** — Leverage ImageNet-pretrained features for superior detection
+4. **Explainability** — Validate that the model learns forensically meaningful features
 
 ---
 
@@ -60,7 +60,7 @@ The project uses the **CIFAKE** dataset, a benchmark for AI-generated image dete
 | **Total images** | 120,000 |
 | **Training set** | 100,000 (50,000 Real + 50,000 Fake) |
 | **Test set** | 20,000 (10,000 Real + 10,000 Fake) |
-| **Image dimensions** | 32 Ã— 32 Ã— 3 (RGB) |
+| **Image dimensions** | 32 × 32 × 3 (RGB) |
 | **Real source** | CIFAR-10 (authentic camera photographs) |
 | **Fake source** | Stable Diffusion v1 (AI-generated) |
 | **Class balance** | Perfectly balanced (50/50) |
@@ -97,13 +97,13 @@ graph LR
 
 ## 5. Task 1: Exploratory Data Analysis & Forensic Analysis
 
-Task 1 applies classical image forensics techniques to identify the physical signals that distinguish real photographs from AI-generated images. These findings directly inform the modeling strategy for Tasks 2â€“4.
+Task 1 applies classical image forensics techniques to identify the physical signals that distinguish real photographs from AI-generated images. These findings directly inform the modeling strategy for Tasks 2–4.
 
 ### 5.1 Visual Sample Inspection
 
 ![Sample images from the CIFAKE dataset showing rows of REAL and FAKE images side by side](images/task1_cell33_img1.png)
 
-**Figure 1 â€” Sample Images Grid (REAL vs. FAKE).** This 4Ã—10 grid displays randomly sampled images from both classes. The top rows contain authentic CIFAR-10 photographs, while the bottom rows show Stable Diffusion-generated counterparts. At 32Ã—32 resolution, the visual differences between real and fake images are subtle and essentially indistinguishable to human observers. This confirms that pixel-level forensic analysisâ€”rather than visual inspectionâ€”is necessary for reliable detection.
+**Figure 1 — Sample Images Grid (REAL vs. FAKE).** This 4×10 grid displays randomly sampled images from both classes. The top rows contain authentic CIFAR-10 photographs, while the bottom rows show Stable Diffusion-generated counterparts. At 32×32 resolution, the visual differences between real and fake images are subtle and essentially indistinguishable to human observers. This confirms that pixel-level forensic analysis—rather than visual inspection—is necessary for reliable detection.
 
 ### 5.2 Pixel Statistics Analysis
 
@@ -120,13 +120,13 @@ Real images exhibit consistently higher mean pixel values across all channels, w
 
 ![Per-channel pixel distribution histograms for Real vs. Fake images](images/task1_cell35_img1.png)
 
-**Figure 2 â€” Pixel Distribution Histograms.** This figure shows the per-channel (Red, Green, Blue) pixel intensity distributions for real and fake images overlaid on the same axes. The distributions for real images (green curves) are consistently shifted rightward compared to fake images (red curves), confirming the mean intensity difference. Additionally, the shape of the distributions differs slightly: real images show more natural, multi-modal distributions reflecting diverse real-world scenes, while fake images exhibit slightly smoother, more uniform distributions characteristic of neural network outputs.
+**Figure 2 — Pixel Distribution Histograms.** This figure shows the per-channel (Red, Green, Blue) pixel intensity distributions for real and fake images overlaid on the same axes. The distributions for real images (green curves) are consistently shifted rightward compared to fake images (red curves), confirming the mean intensity difference. Additionally, the shape of the distributions differs slightly: real images show more natural, multi-modal distributions reflecting diverse real-world scenes, while fake images exhibit slightly smoother, more uniform distributions characteristic of neural network outputs.
 
 ### 5.3 Average Image Analysis
 
 ![Average image comparison showing mean RGB values for Real and Fake](images/task1_cell37_img1.png)
 
-**Figure 3 â€” Average Image Visualization.** This figure displays the pixel-wise average of 2,000 real images (left) alongside 2,000 fake images (center), with a difference map (right) highlighting where the averages diverge. The real average image (R=125.3, G=122.6, B=114.1) appears brighter and with more uniform color balance compared to the fake average (R=114.4, G=112.5, B=98.7). The difference map reveals that the largest divergences occur primarily in the blue channel, consistent with the pixel statistics above. This global brightness/color difference, while useful, is not the most reliable forensic signalâ€”it could be easily countered by simple post-processing.
+**Figure 3 — Average Image Visualization.** This figure displays the pixel-wise average of 2,000 real images (left) alongside 2,000 fake images (center), with a difference map (right) highlighting where the averages diverge. The real average image (R=125.3, G=122.6, B=114.1) appears brighter and with more uniform color balance compared to the fake average (R=114.4, G=112.5, B=98.7). The difference map reveals that the largest divergences occur primarily in the blue channel, consistent with the pixel statistics above. This global brightness/color difference, while useful, is not the most reliable forensic signal—it could be easily countered by simple post-processing.
 
 ### 5.4 Frequency Domain Analysis (FFT)
 
@@ -134,31 +134,31 @@ The **Fast Fourier Transform (FFT)** analysis is the most critical forensic tech
 
 ![FFT magnitude spectra for real vs. fake images](images/task1_cell38_img1.png)
 
-**Figure 4 â€” FFT Magnitude Spectra.** This figure shows the 2D Fourier magnitude spectra averaged over batches of real (left) and fake (center) images, with a difference map (right). The real image spectrum exhibits the characteristic **1/f power decay** expected of natural imagesâ€”a smooth, radially symmetric drop-off from low to high frequencies. The fake image spectrum, while visually similar, shows subtle but systematic deviations: the power distribution is slightly altered at specific frequency bands, particularly in the mid-to-high frequency range. The difference map highlights these deviations as bright spots, indicating frequency bands where the generative model's output differs from natural image statistics.
+**Figure 4 — FFT Magnitude Spectra.** This figure shows the 2D Fourier magnitude spectra averaged over batches of real (left) and fake (center) images, with a difference map (right). The real image spectrum exhibits the characteristic **1/f power decay** expected of natural images—a smooth, radially symmetric drop-off from low to high frequencies. The fake image spectrum, while visually similar, shows subtle but systematic deviations: the power distribution is slightly altered at specific frequency bands, particularly in the mid-to-high frequency range. The difference map highlights these deviations as bright spots, indicating frequency bands where the generative model's output differs from natural image statistics.
 
 ![Radial power spectrum curves comparing real and fake frequency content](images/task1_cell39_img1.png)
 
-**Figure 5 â€” Radial Power Spectrum Curves.** This is the **single most informative forensic visualization** in the entire analysis. The plot shows the azimuthally-averaged power spectral density as a function of spatial frequency for both real and fake images. Both curves follow the expected 1/f decay, but they diverge significantly in the **mid-to-high frequency range**. Real images maintain a smooth, natural power decay consistent with camera sensor noise and optical characteristics. Fake images show characteristic deviationsâ€”bumps and dipsâ€”that reflect the diffusion-denoising process used by Stable Diffusion. These frequency-domain artifacts are the **primary forensic feature** that the deep learning models will learn to detect.
+**Figure 5 — Radial Power Spectrum Curves.** This is the **single most informative forensic visualization** in the entire analysis. The plot shows the azimuthally-averaged power spectral density as a function of spatial frequency for both real and fake images. Both curves follow the expected 1/f decay, but they diverge significantly in the **mid-to-high frequency range**. Real images maintain a smooth, natural power decay consistent with camera sensor noise and optical characteristics. Fake images show characteristic deviations—bumps and dips—that reflect the diffusion-denoising process used by Stable Diffusion. These frequency-domain artifacts are the **primary forensic feature** that the deep learning models will learn to detect.
 
 ### 5.5 Color and Texture Analysis
 
 ![HSV saturation distribution and LBP texture comparison](images/task1_cell40_img1.png)
 
-**Figure 6 â€” Color Saturation & LBP Texture Analysis.** This three-panel figure examines two additional forensic signals:
+**Figure 6 — Color Saturation & LBP Texture Analysis.** This three-panel figure examines two additional forensic signals:
 
 - **Left panel (HSV Saturation):** The saturation histograms reveal that fake images (mean: 88.28) are consistently more saturated than real images (mean: 70.76), a difference of approximately 17.5 units. This hyper-saturation is a known artifact of generative models, which tend to produce overly vivid colors.
 - **Center panel (LBP Texture):** The Local Binary Pattern (LBP) histograms capture micro-texture statistics. Real images exhibit richer, more diverse micro-texture distributions due to the combination of natural surface textures and camera sensor noise. Fake images show smoother, less varied LBP distributions, reflecting the inherently smooth outputs of neural networks.
-- **Right panel (LBP Difference):** The difference plot (Real âˆ’ Fake) highlights specific LBP codes where the two classes diverge most. Positive bars indicate texture patterns more prevalent in real images; negative bars indicate patterns more common in fakes.
+- **Right panel (LBP Difference):** The difference plot (Real − Fake) highlights specific LBP codes where the two classes diverge most. Positive bars indicate texture patterns more prevalent in real images; negative bars indicate patterns more common in fakes.
 
 ### 5.6 Noise Residual Analysis
 
 ![Noise residual analysis showing sensor noise patterns](images/task1_cell41_img1.png)
 
-**Figure 7 â€” Noise Residual Analysis.** This figure examines camera sensor noiseâ€”one of the most reliable forensic signals for image authenticity verification. The noise residual is computed by subtracting a Gaussian-blurred version of each image from its original, isolating the high-frequency noise component.
+**Figure 7 — Noise Residual Analysis.** This figure examines camera sensor noise—one of the most reliable forensic signals for image authenticity verification. The noise residual is computed by subtracting a Gaussian-blurred version of each image from its original, isolating the high-frequency noise component.
 
 - **Top row:** Sample noise residuals from real images, showing random, spatially uniform patterns characteristic of Poisson (shot) noise and Gaussian (read) noise from camera sensors.
-- **Bottom row:** Sample noise residuals from fake images, showing more structured, non-random patternsâ€”the residuals of the diffusion-denoising process.
-- **Right panels:** Noise standard deviation distributions. Real images (std: 10.39) exhibit higher noise variance than fake images (std: 13.03), though the counterintuitive direction of this metric (fake noise std being *higher*) suggests the noise in fake images is of a fundamentally different characterâ€”structured rather than random.
+- **Bottom row:** Sample noise residuals from fake images, showing more structured, non-random patterns—the residuals of the diffusion-denoising process.
+- **Right panels:** Noise standard deviation distributions. Real images (std: 10.39) exhibit higher noise variance than fake images (std: 13.03), though the counterintuitive direction of this metric (fake noise std being *higher*) suggests the noise in fake images is of a fundamentally different character—structured rather than random.
 
 ### 5.7 Forensic Findings Summary
 
@@ -166,34 +166,34 @@ The EDA identified **four distinct forensic signals** that differentiate real fr
 
 | Signal | Strength | Description |
 |--------|----------|-------------|
-| **FFT frequency deviation** | â˜…â˜…â˜…â˜…â˜… | Most reliable; AI images show systematic power deviation at mid-high frequencies |
-| **Noise residual difference** | â˜…â˜…â˜…â˜…â˜† | Different noise structure (random sensor noise vs. structured diffusion residuals) |
-| **LBP micro-texture** | â˜…â˜…â˜…â˜†â˜† | Real images have richer micro-texture diversity |
-| **Color saturation bias** | â˜…â˜…â˜†â˜†â˜† | Fake images are more saturated; easily countered by post-processing |
+| **FFT frequency deviation** | ★★★★★ | Most reliable; AI images show systematic power deviation at mid-high frequencies |
+| **Noise residual difference** | ★★★★☆ | Different noise structure (random sensor noise vs. structured diffusion residuals) |
+| **LBP micro-texture** | ★★★☆☆ | Real images have richer micro-texture diversity |
+| **Color saturation bias** | ★★☆☆☆ | Fake images are more saturated; easily countered by post-processing |
 
 > [!IMPORTANT]
-> **Augmentation Constraint:** Based on these findings, augmentations that alter forensic signalsâ€”JPEG compression, Gaussian blur, and frequency transformsâ€”are explicitly **excluded** from the training pipeline. Only safe augmentations (horizontal flip, mild color jitter, random crop with reflection padding) are permitted.
+> **Augmentation Constraint:** Based on these findings, augmentations that alter forensic signals—JPEG compression, Gaussian blur, and frequency transforms—are explicitly **excluded** from the training pipeline. Only safe augmentations (horizontal flip, mild color jitter, random crop with reflection padding) are permitted.
 
 ---
 
 ## 6. Task 2: Baseline CNN (Trained from Scratch)
 
-Task 2 trains a custom CNN architecture from scratch to establish a **performance floor**â€”the minimum level of detection capability that the pretrained model in Task 3 must exceed.
+Task 2 trains a custom CNN architecture from scratch to establish a **performance floor**—the minimum level of detection capability that the pretrained model in Task 3 must exceed.
 
 ### 6.1 Architecture
 
 ```
-Input (32Ã—32Ã—3)
-    â†“
-Block 1: Conv(32) â†’ BN â†’ ReLU â†’ Conv(32) â†’ BN â†’ ReLU â†’ MaxPool â†’ Dropout(0.25)
-    â†“
-Block 2: Conv(64) â†’ BN â†’ ReLU â†’ Conv(64) â†’ BN â†’ ReLU â†’ MaxPool â†’ Dropout(0.25)
-    â†“
-Block 3: Conv(128) â†’ BN â†’ ReLU â†’ Conv(128) â†’ BN â†’ ReLU â†’ MaxPool â†’ Dropout(0.30)
-    â†“
-Block 4: Conv(256) â†’ BN â†’ ReLU â†’ Conv(256) â†’ BN â†’ ReLU â†’ GlobalAvgPool â†’ Dropout(0.40)
-    â†“
-Dense(256) â†’ BN â†’ ReLU â†’ Dropout(0.50) â†’ Dense(1) â†’ Sigmoid
+Input (32×32×3)
+    ↓
+Block 1: Conv(32) → BN → ReLU → Conv(32) → BN → ReLU → MaxPool → Dropout(0.25)
+    ↓
+Block 2: Conv(64) → BN → ReLU → Conv(64) → BN → ReLU → MaxPool → Dropout(0.25)
+    ↓
+Block 3: Conv(128) → BN → ReLU → Conv(128) → BN → ReLU → MaxPool → Dropout(0.30)
+    ↓
+Block 4: Conv(256) → BN → ReLU → Conv(256) → BN → ReLU → GlobalAvgPool → Dropout(0.40)
+    ↓
+Dense(256) → BN → ReLU → Dropout(0.50) → Dense(1) → Sigmoid
 ```
 
 | Property | Value |
@@ -209,9 +209,9 @@ Dense(256) â†’ BN â†’ ReLU â†’ Dropout(0.50) â†’ Dense(1) â
 
 ![Baseline CNN training curves showing loss, accuracy, AUC, and learning rate over 30 epochs](images/task2_cell8_img1.png)
 
-**Figure 8 â€” Baseline CNN Training Curves.** This four-panel figure tracks the model's learning dynamics across 30 epochs:
+**Figure 8 — Baseline CNN Training Curves.** This four-panel figure tracks the model's learning dynamics across 30 epochs:
 
-- **Top-left (Loss):** Training loss (blue) decreases smoothly from ~0.36 to ~0.14, while validation loss (orange) initially drops but plateaus around 0.26 and begins to oscillate. The growing **gap of approximately 0.12** between training and validation loss from epoch 15 onward indicates moderate overfittingâ€”the model is memorizing training data rather than learning generalizable features.
+- **Top-left (Loss):** Training loss (blue) decreases smoothly from ~0.36 to ~0.14, while validation loss (orange) initially drops but plateaus around 0.26 and begins to oscillate. The growing **gap of approximately 0.12** between training and validation loss from epoch 15 onward indicates moderate overfitting—the model is memorizing training data rather than learning generalizable features.
 - **Top-right (Accuracy):** Training accuracy climbs steadily to 94.65%, but validation accuracy plateaus around 89.7%, yielding an **overfit gap of 4.94 percentage points**. This ceiling is characteristic of scratch-trained models that lack the benefit of pretrained feature representations.
 - **Bottom-left (AUC):** The ROC-AUC curve shows rapid improvement in early epochs before converging to 0.9922. Notably, AUC continues improving slightly even after accuracy plateaus, suggesting the model's ranking capability (probability calibration) improves independently of its binary classification accuracy.
 - **Bottom-right (Learning Rate):** The cosine annealing schedule smoothly decays the learning rate from 3e-4 to near zero, enabling fine-grained convergence in later epochs without the discontinuities of step-decay schedules.
@@ -220,9 +220,9 @@ Dense(256) â†’ BN â†’ ReLU â†’ Dropout(0.50) â†’ Dense(1) â
 
 ![Baseline CNN evaluation showing confusion matrix and ROC curve](images/task2_cell11_img1.png)
 
-**Figure 9 â€” Baseline CNN Evaluation (Confusion Matrix & ROC Curve).** This figure presents two complementary views of the baseline model's test set performance:
+**Figure 9 — Baseline CNN Evaluation (Confusion Matrix & ROC Curve).** This figure presents two complementary views of the baseline model's test set performance:
 
-- **Confusion Matrix (left):** The matrix reveals a pronounced **asymmetry in error types**: the model correctly identifies 99.4% of real images (high specificity) but only captures 80.0% of fake images (moderate recall). This means approximately **2,000 fake images out of 10,000 are missed**â€”a critical weakness for content moderation where catching fakes is the primary objective.
+- **Confusion Matrix (left):** The matrix reveals a pronounced **asymmetry in error types**: the model correctly identifies 99.4% of real images (high specificity) but only captures 80.0% of fake images (moderate recall). This means approximately **2,000 fake images out of 10,000 are missed**—a critical weakness for content moderation where catching fakes is the primary objective.
 - **ROC Curve (right):** The curve hugs the top-left corner with an AUC of 0.9922, indicating excellent ranking capability overall. However, the curve's shape at the high-sensitivity end reveals that achieving >95% recall requires accepting a significant drop in precision.
 
 | Metric | Value |
@@ -234,33 +234,33 @@ Dense(256) â†’ BN â†’ ReLU â†’ Dropout(0.50) â†’ Dense(1) â
 | Recall | **80.04%** |
 
 > [!WARNING]
-> The baseline CNN's **recall of only 80.04%** means 1 in 5 fake images would be missed. For content moderation, this is unacceptableâ€”the primary goal is to catch as many fakes as possible, even at the cost of some false positives.
+> The baseline CNN's **recall of only 80.04%** means 1 in 5 fake images would be missed. For content moderation, this is unacceptable—the primary goal is to catch as many fakes as possible, even at the cost of some false positives.
 
 ### 6.4 Score Distribution & Threshold Analysis
 
 ![Score distribution showing probability distributions for real and fake images](images/task2_cell12_img1.png)
 
-**Figure 10 â€” Baseline CNN Score Distribution.** This figure reveals a critical **calibration problem**:
+**Figure 10 — Baseline CNN Score Distribution.** This figure reveals a critical **calibration problem**:
 
-- The probability distributions for real (green) and fake (red) images overlap significantly in the 0â€“0.3 range, and the model's probability outputs are heavily skewed toward 0 (most samples receive very low probabilities).
-- The **optimal F1-maximizing threshold is 0.0297**â€”dramatically below the expected 0.5. This means the model's raw probability outputs do not represent well-calibrated confidence scores; instead, they are heavily compressed toward zero. At this optimal threshold, the metrics improve substantially: Accuracy 95.72%, F1 0.9576, Recall 96.55%.
-- This poor calibration means the default 0.5 threshold is inappropriate, and any deployment would require careful threshold tuningâ€”a fragile approach that may not generalize.
+- The probability distributions for real (green) and fake (red) images overlap significantly in the 0–0.3 range, and the model's probability outputs are heavily skewed toward 0 (most samples receive very low probabilities).
+- The **optimal F1-maximizing threshold is 0.0297**—dramatically below the expected 0.5. This means the model's raw probability outputs do not represent well-calibrated confidence scores; instead, they are heavily compressed toward zero. At this optimal threshold, the metrics improve substantially: Accuracy 95.72%, F1 0.9576, Recall 96.55%.
+- This poor calibration means the default 0.5 threshold is inappropriate, and any deployment would require careful threshold tuning—a fragile approach that may not generalize.
 
 ### 6.5 Learned Filter Visualization
 
 ![32 learned convolutional filters from the baseline CNN's first layer](images/task2_cell14_img1.png)
 
-**Figure 11 â€” Baseline CNN First-Layer Filters.** This grid shows the 32 learned convolutional kernels from the first layer of the scratch-trained baseline CNN. The filters appear as irregular **color blobs and low-frequency patterns** rather than the structured Gabor-like edge detectors typically seen in well-trained vision models. This confirms that the scratch-trained model has learned high-level color/texture features specific to this dataset but has **not developed the structured, orientation-selective filters** that ImageNet-pretrained models possess. This lack of sophisticated low-level feature extractors is a key reason the baseline's recall is limited.
+**Figure 11 — Baseline CNN First-Layer Filters.** This grid shows the 32 learned convolutional kernels from the first layer of the scratch-trained baseline CNN. The filters appear as irregular **color blobs and low-frequency patterns** rather than the structured Gabor-like edge detectors typically seen in well-trained vision models. This confirms that the scratch-trained model has learned high-level color/texture features specific to this dataset but has **not developed the structured, orientation-selective filters** that ImageNet-pretrained models possess. This lack of sophisticated low-level feature extractors is a key reason the baseline's recall is limited.
 
 ![Activation maps showing how the baseline CNN processes sample images](images/task2_cell15_img1.png)
 
-**Figure 12 â€” Baseline CNN Activation Maps.** This figure visualizes the intermediate feature maps produced by the baseline CNN when processing sample images, showing how information flows through the network's four convolutional blocks. The activation maps become progressively more abstract at deeper layers, capturing increasingly high-level features. However, compared to pretrained models, these activations lack the fine-grained texture sensitivity needed for reliable forensic detection.
+**Figure 12 — Baseline CNN Activation Maps.** This figure visualizes the intermediate feature maps produced by the baseline CNN when processing sample images, showing how information flows through the network's four convolutional blocks. The activation maps become progressively more abstract at deeper layers, capturing increasingly high-level features. However, compared to pretrained models, these activations lack the fine-grained texture sensitivity needed for reliable forensic detection.
 
 ---
 
 ## 7. Task 3: EfficientNet Transfer Learning
 
-Task 3 addresses the baseline's limitations by leveraging **EfficientNetB0** pretrained on ImageNetâ€”a model that has already learned rich, hierarchical visual features from millions of diverse images. The key insight is that ImageNet-pretrained low-level filters (edge detectors, texture analyzers, frequency-sensitive kernels) are **directly useful for forensic detection**, even though ImageNet contains no fake images.
+Task 3 addresses the baseline's limitations by leveraging **EfficientNetB0** pretrained on ImageNet—a model that has already learned rich, hierarchical visual features from millions of diverse images. The key insight is that ImageNet-pretrained low-level filters (edge detectors, texture analyzers, frequency-sensitive kernels) are **directly useful for forensic detection**, even though ImageNet contains no fake images.
 
 ### 7.1 Two-Phase Training Strategy
 
@@ -269,7 +269,7 @@ Task 3 addresses the baseline's limitations by leveraging **EfficientNetB0** pre
 | **Phase 1: Feature Extraction** | 10 | 328,705 (7.6%) | Backbone frozen, train head only | 1e-4 |
 | **Phase 2: Fine-Tuning** | 20 | 2,046,241 (47.2%) | Top 30 backbone layers + head | Backbone: 1e-5, Head: 1e-4 |
 
-**Total parameters:** 4,336,253 (3.5Ã— more than baseline)
+**Total parameters:** 4,336,253 (3.5× more than baseline)
 
 > [!TIP]
 > The **discriminative learning rate** in Phase 2 (backbone: 1e-5, head: 1e-4) is crucial. The backbone's pretrained low-level features (edges, textures) should be preserved with minimal perturbation, while the classification head needs larger updates to adapt to the forensic detection task.
@@ -283,7 +283,7 @@ Task 3 addresses the baseline's limitations by leveraging **EfficientNetB0** pre
 | 1 | 0.4684 | 82.31% | 85.76% | 0.9395 |
 | 10 | 0.3989 | 87.55% | 85.96% | 0.9561 |
 
-Phase 1 achieves only AUC 0.9583â€”**below the baseline's 0.9922**. This is expected: with the backbone frozen, only the 328K-parameter classification head is learning, which cannot match the full 1.2M parameters of the baseline CNN. Phase 1 serves solely to initialize the head weights before the critical fine-tuning phase.
+Phase 1 achieves only AUC 0.9583—**below the baseline's 0.9922**. This is expected: with the backbone frozen, only the 328K-parameter classification head is learning, which cannot match the full 1.2M parameters of the baseline CNN. Phase 1 serves solely to initialize the head weights before the critical fine-tuning phase.
 
 **Phase 2 Performance (Fine-Tuning):**
 
@@ -294,23 +294,23 @@ Phase 1 achieves only AUC 0.9583â€”**below the baseline's 0.9922**. This is
 | 18 | 0.2905 | 94.98% | **95.10%** | **0.9910** |
 | 20 | 0.2883 | 95.14% | 94.51% | 0.9905 |
 
-Phase 2 rapidly lifts AUC from 0.9583 to **0.9910** within 12 epochs, and accuracy to **95.10%** at epoch 18. Critically, the train-validation gap remains small (~0.5%), indicating **minimal overfitting**â€”a direct benefit of using pretrained representations.
+Phase 2 rapidly lifts AUC from 0.9583 to **0.9910** within 12 epochs, and accuracy to **95.10%** at epoch 18. Critically, the train-validation gap remains small (~0.5%), indicating **minimal overfitting**—a direct benefit of using pretrained representations.
 
 ### 7.3 Comprehensive Model Comparison
 
 ![Three-way comparison of baseline vs. EfficientNet models](images/task3_cell12_img1.png)
 
-**Figure 13 â€” EfficientNet vs. Baseline CNN Comparison.** This multi-panel visualization provides a comprehensive head-to-head comparison:
+**Figure 13 — EfficientNet vs. Baseline CNN Comparison.** This multi-panel visualization provides a comprehensive head-to-head comparison:
 
-- **Confusion Matrices:** The EfficientNet confusion matrix shows a dramatically more balanced error profile. While the baseline catches only 80% of fakes, EfficientNet catches **97.16%**â€”a transformative improvement of **+17.12 percentage points** in recall. The false positive rate increases slightly (from 0.7% to 6.7%), but this trade-off is highly favorable for content moderation.
+- **Confusion Matrices:** The EfficientNet confusion matrix shows a dramatically more balanced error profile. While the baseline catches only 80% of fakes, EfficientNet catches **97.16%**—a transformative improvement of **+17.12 percentage points** in recall. The false positive rate increases slightly (from 0.7% to 6.7%), but this trade-off is highly favorable for content moderation.
 - **ROC Curves:** Both models achieve excellent AUC (baseline: 0.9922, EfficientNet: 0.9910), but the curves diverge at the critical high-sensitivity operating point. EfficientNet maintains higher precision at recall levels above 90%.
-- **Score Distributions:** The EfficientNet's probability distributions are far more separated and better calibrated, with the optimal threshold at **0.5714**â€”very close to the natural 0.5 cutoff. This is a dramatic improvement over the baseline's pathological 0.030 threshold.
+- **Score Distributions:** The EfficientNet's probability distributions are far more separated and better calibrated, with the optimal threshold at **0.5714**—very close to the natural 0.5 cutoff. This is a dramatic improvement over the baseline's pathological 0.030 threshold.
 
 ### 7.4 Filter Comparison
 
 ![EfficientNet first-layer filters showing structured Gabor-like patterns](images/task3_cell13_img1.png)
 
-**Figure 14 â€” EfficientNet First-Layer Filters.** Compare these to Figure 11 (baseline filters). The pretrained EfficientNet filters display clearly **structured, Gabor-like patterns**: oriented edge detectors at various angles, color-opponent pairs (red-green, blue-yellow), and frequency-selective responses. These are precisely the types of low-level features needed for forensic texture analysisâ€”and they were learned from millions of natural images in ImageNet, not from the 100K CIFAKE training samples. This pre-existing feature vocabulary is the fundamental reason transfer learning outperforms scratch training for this task.
+**Figure 14 — EfficientNet First-Layer Filters.** Compare these to Figure 11 (baseline filters). The pretrained EfficientNet filters display clearly **structured, Gabor-like patterns**: oriented edge detectors at various angles, color-opponent pairs (red-green, blue-yellow), and frequency-selective responses. These are precisely the types of low-level features needed for forensic texture analysis—and they were learned from millions of natural images in ImageNet, not from the 100K CIFAKE training samples. This pre-existing feature vocabulary is the fundamental reason transfer learning outperforms scratch training for this task.
 
 ---
 
@@ -324,8 +324,8 @@ The EfficientNet model at the 0.5714 threshold produces the following error brea
 
 | Error Type | Count | Rate | Description |
 |-----------|-------|------|-------------|
-| **False Positives** (REAL â†’ FAKE) | 490 | 2.5% | Legitimate images incorrectly flagged |
-| **False Negatives** (FAKE â†’ REAL) | 390 | 1.9% | AI-generated images missed |
+| **False Positives** (REAL → FAKE) | 490 | 2.5% | Legitimate images incorrectly flagged |
+| **False Negatives** (FAKE → REAL) | 390 | 1.9% | AI-generated images missed |
 
 **High-confidence errors** are particularly concerning:
 - The most confident false positive had p=0.981 (the model was 98.1% sure a real image was fake)
@@ -335,30 +335,30 @@ The EfficientNet model at the 0.5714 threshold produces the following error brea
 
 ![Grad-CAM heatmaps for error cases showing where the model focuses](images/task4_cell27_img1.png)
 
-**Figure 15 â€” Grad-CAM Error Analysis.** This is the most forensically significant visualization in the entire project. It shows Grad-CAM heatmaps for error casesâ€”images where the model makes incorrect predictions:
+**Figure 15 — Grad-CAM Error Analysis.** This is the most forensically significant visualization in the entire project. It shows Grad-CAM heatmaps for error cases—images where the model makes incorrect predictions:
 
 - **False Positives (Top rows):** For real images incorrectly classified as fake, the Grad-CAM heatmaps show the model focusing on specific texture regions that, in these particular images, happen to exhibit characteristics similar to AI-generated content. These are often images with unusually smooth surfaces, digital art-like qualities, or post-processing artifacts that mimic generative model outputs.
 - **False Negatives (Bottom rows):** For fake images incorrectly classified as real, the heatmaps reveal that the model fails to detect forensic artifacts because these particular AI-generated images have unusually natural-looking texture patterns. These represent cases where Stable Diffusion produced output that closely mimics camera sensor characteristics.
 
 > [!IMPORTANT]
-> **Key Forensic Validation:** The Grad-CAM analysis confirms that the model activates on **texture and boundary regions**â€”the same regions identified in Task 1 as containing forensic signals (noise residuals, frequency artifacts, LBP texture differences). The model is NOT relying on semantic content (objects, scenes) but on **physical image properties**, validating the forensic approach.
+> **Key Forensic Validation:** The Grad-CAM analysis confirms that the model activates on **texture and boundary regions**—the same regions identified in Task 1 as containing forensic signals (noise residuals, frequency artifacts, LBP texture differences). The model is NOT relying on semantic content (objects, scenes) but on **physical image properties**, validating the forensic approach.
 
 ### 8.3 Activation Distribution Analysis
 
 ![Mean activation maps comparing spatial attention patterns for real vs. fake images](images/task4_cell31_img1.png)
 
-**Figure 16 â€” Mean Activation Distribution Maps.** This figure shows the spatially-averaged Grad-CAM activations across 100 correctly-classified samples per class:
+**Figure 16 — Mean Activation Distribution Maps.** This figure shows the spatially-averaged Grad-CAM activations across 100 correctly-classified samples per class:
 
-- **Real images:** Mean center activation = 0.107, mean edge activation = 0.175. The activations are **diffuse and relatively weak**, spread across the image with slight emphasis on edges. This pattern is consistent with the model finding relatively few forensic anomalies in authentic photographsâ€”it "passes" them with low-confidence activations distributed broadly.
-- **Fake images:** Mean center activation = 0.394, mean edge activation = 0.301. The activations are **much stronger and more concentrated**, particularly in central texture regions. This indicates the model is detecting specific forensic artifactsâ€”frequency deviations, noise pattern anomalies, or texture irregularitiesâ€”that trigger strong, localized responses in the final convolutional layer.
+- **Real images:** Mean center activation = 0.107, mean edge activation = 0.175. The activations are **diffuse and relatively weak**, spread across the image with slight emphasis on edges. This pattern is consistent with the model finding relatively few forensic anomalies in authentic photographs—it "passes" them with low-confidence activations distributed broadly.
+- **Fake images:** Mean center activation = 0.394, mean edge activation = 0.301. The activations are **much stronger and more concentrated**, particularly in central texture regions. This indicates the model is detecting specific forensic artifacts—frequency deviations, noise pattern anomalies, or texture irregularities—that trigger strong, localized responses in the final convolutional layer.
 
-The **3.7Ã— stronger center activation** for fake images (0.394 vs. 0.107) provides compelling evidence that the model has learned to detect specific forensic features rather than relying on general image statistics.
+The **3.7× stronger center activation** for fake images (0.394 vs. 0.107) provides compelling evidence that the model has learned to detect specific forensic features rather than relying on general image statistics.
 
 ### 8.4 Final Performance Summary
 
 ![Final project summary showing comprehensive metrics comparison](images/task4_cell36_img1.png)
 
-**Figure 17 â€” Final Project Performance Summary.** This dashboard-style visualization consolidates all key metrics from the project pipeline, providing at-a-glance comparison between the baseline CNN and the final EfficientNet model across accuracy, AUC, F1, precision, recall, and calibration quality.
+**Figure 17 — Final Project Performance Summary.** This dashboard-style visualization consolidates all key metrics from the project pipeline, providing at-a-glance comparison between the baseline CNN and the final EfficientNet model across accuracy, AUC, F1, precision, recall, and calibration quality.
 
 ---
 
@@ -367,13 +367,13 @@ The **3.7Ã— stronger center activation** for fake images (0.394 vs. 0.107) pr
 | Metric | Baseline CNN | EfficientNet | Î” (Improvement) |
 |--------|:------------:|:------------:|:----------------:|
 | **Accuracy (default threshold)** | 89.73% | 95.10% | **+5.37 pp** |
-| **ROC-AUC** | 0.9922 | 0.9910 | âˆ’0.0012 |
+| **ROC-AUC** | 0.9922 | 0.9910 | −0.0012 |
 | **F1 Score** | 0.8863 | 0.9520 | **+0.0657** |
-| **Precision** | 99.29% | 93.32% | âˆ’5.97 pp |
+| **Precision** | 99.29% | 93.32% | −5.97 pp |
 | **Recall** | 80.04% | **97.16%** | **+17.12 pp** |
 | **Optimal Threshold** | 0.030 | **0.5714** | Dramatically improved |
-| **Parameters** | 1.24M | 4.34M | +3.5Ã— |
-| **Training Time** | 68 min | 255 min | +3.75Ã— |
+| **Parameters** | 1.24M | 4.34M | +3.5× |
+| **Training Time** | 68 min | 255 min | +3.75× |
 
 > [!NOTE]
 > **Why AUC is slightly lower but the model is better:** The baseline achieves marginally higher AUC (0.9922 vs. 0.9910) because AUC measures overall ranking quality across *all* thresholds. However, the EfficientNet model is vastly superior at the **operationally relevant** threshold range. Its well-calibrated threshold (0.5714 vs. 0.030) and dramatically higher recall (97.16% vs. 80.04%) make it the clearly superior model for real-world deployment.
@@ -387,17 +387,17 @@ The **3.7Ã— stronger center activation** for fake images (0.394 vs. 0.107) pr
 | **Model Name** | CIFAKE Fake Image Detector v1.0 |
 | **Architecture** | EfficientNetB0 with custom forensic classification head |
 | **Training** | Two-phase transfer learning from ImageNet |
-| **Primary Use** | Content moderation â€” flag AI-generated images for human review |
+| **Primary Use** | Content moderation — flag AI-generated images for human review |
 | **Intended Users** | Content moderation teams, platform engineers |
 | **Decision Threshold** | 0.5714 |
-| **Recall at Threshold** | 97.2% â€” catches 97 out of 100 AI-generated images |
-| **Precision at Threshold** | 93.3% â€” 93 of every 100 flags are genuinely fake |
+| **Recall at Threshold** | 97.2% — catches 97 out of 100 AI-generated images |
+| **Precision at Threshold** | 93.3% — 93 of every 100 flags are genuinely fake |
 
 **Deployment Package Contents:**
-- `app.py` â€” Streamlit inference application
-- `fake_detector_weights.pth` â€” Model weights (17.2 MB)
-- `model_config.json` â€” Model configuration
-- `requirements.txt` â€” Python dependencies
+- `app.py` — Streamlit inference application
+- `fake_detector_weights.pth` — Model weights (17.2 MB)
+- `model_config.json` — Model configuration
+- `requirements.txt` — Python dependencies
 
 ---
 
@@ -406,7 +406,7 @@ The **3.7Ã— stronger center activation** for fake images (0.394 vs. 0.107) pr
 ### Limitations
 
 1. **Generator specificity:** Trained exclusively on Stable Diffusion v1 outputs. Performance on images from DALL-E, Midjourney, Sora, or future generators is unknown and likely degraded.
-2. **Resolution constraint:** Trained on 32Ã—32 CIFAR images upsampled to 224Ã—224. Behavior on native high-resolution (512Ã—512+) images from other sources has not been validated.
+2. **Resolution constraint:** Trained on 32×32 CIFAR images upsampled to 224×224. Behavior on native high-resolution (512×512+) images from other sources has not been validated.
 3. **Compression sensitivity:** JPEG compression artifacts may confuse the model, as they occupy similar frequency bands as the forensic signals the model detects.
 4. **No temporal validation:** Social media images undergo multiple re-compression rounds that may alter or destroy forensic signals.
 5. **No demographic fairness analysis** has been performed.
