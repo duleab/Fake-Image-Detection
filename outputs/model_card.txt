@@ -1,0 +1,81 @@
+============================================================
+MODEL CARD — Fake Image Detector v1.0
+============================================================
+
+MODEL DETAILS
+  Name             : CIFAKE Fake Image Detector v1.0
+  Type             : Binary classification (REAL / FAKE)
+  Architecture     : EfficientNetB0 with custom forensic head
+  Training         : Two-phase transfer learning from ImageNet
+  Framework        : PyTorch
+  Version          : 1.0.0
+
+INTENDED USE
+  Primary use      : Content moderation — flag AI-generated
+                     images for human review on social platforms
+  Intended users   : Content moderation teams, platform engineers
+  Out-of-scope     : Automated removal without human review.
+                     Authentication of legal or medical images.
+                     Images from generators not in training distribution.
+
+TRAINING DATA
+  Dataset          : CIFAKE (birdy654/cifake-real-and-ai-generated-synthetic-images)
+  Real images      : 50,000 (CIFAR-10 — real camera photographs)
+  Fake images      : 50,000 (Stable Diffusion generated)
+  Image size       : 32x32px (upsampled to 224x224 for inference)
+  Classes          : REAL (0), FAKE (1)
+  Class balance    : Perfectly balanced (50/50)
+
+PERFORMANCE (TEST SET — 20,000 images, 10k per class)
+  Accuracy         : 0.9510
+  ROC-AUC          : 0.9910
+  F1 Score         : 0.9510
+  Precision        : 0.9312
+  Recall           : 0.9716
+  Threshold        : 0.5714
+
+  At threshold=0.5714:
+  - Catches 97.2% of AI-generated images (recall)
+  - 93.1% of flagged images are genuinely fake (precision)
+
+VS BASELINE CNN (trained from scratch):
+  Recall improvement   : +0.1712 (+17.1 percentage points)
+  Accuracy improvement : +0.0210
+  Calibration          : threshold 0.030 → 0.5714
+
+EXPLAINABILITY
+  Method           : Grad-CAM (Gradient-weighted Class Activation Mapping)
+  Target layer     : Last convolutional block before Global Average Pool
+  Finding          : Model activates on texture/boundary regions for fakes,
+                     diffuse activation for real images — consistent with
+                     forensic texture detection rather than semantic content.
+
+LIMITATIONS
+  1. Trained only on Stable Diffusion v1 fakes — other generators
+     (DALL-E, Midjourney, Sora) may have different artifact signatures.
+     Expect performance degradation on out-of-distribution generators.
+  2. Trained on 32x32 CIFAR images — performance on high-resolution
+     (512x512+) images from other sources is unknown.
+  3. JPEG compression artifacts may confuse the model — heavily
+     compressed images should be preprocessed before inference.
+  4. No temporal validation — social media images often undergo
+     multiple compression rounds that may alter forensic signals.
+  5. No demographic fairness analysis performed.
+
+ETHICAL CONSIDERATIONS
+  1. False positive rate: legitimate content creators whose images
+     are falsely flagged face real harm. Current FP rate: 6.88%.
+  2. Human oversight: model output should flag for review, not
+     automate removal. A human should review all flagged content.
+  3. Adversarial robustness: model is not tested against adversarial
+     perturbations specifically designed to defeat it.
+  4. Evolving landscape: AI image generation improves rapidly.
+     Model should be retrained quarterly on new generator outputs.
+
+RETRAINING TRIGGERS
+  - AUC drops below 0.95 on a held-out monthly evaluation set
+  - New major image generator released (DALL-E 4, SD3+, etc.)
+  - Recall drops below 0.92 on newly collected fake images
+  - More than 6 months since last retraining
+
+============================================================

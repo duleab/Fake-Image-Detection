@@ -1,0 +1,18 @@
+{
+  "model": "EfficientNetB0 (transfer learning)",
+  "phase1_epochs": 10,
+  "phase2_epochs": 20,
+  "best_phase1_auc": 0.9582592550000001,
+  "best_phase2_auc": 0.9910345099999999,
+  "test_accuracy": 0.951,
+  "test_auc": 0.9910345099999999,
+  "test_pr_auc": 0.9906530736072233,
+  "test_f1": 0.9519890260631001,
+  "test_precision": 0.933154053015751,
+  "test_recall": 0.9716,
+  "opt_threshold": 0.5714070351758794,
+  "opt_f1": 0.9562189054726368,
+  "opt_accuracy": 0.956,
+  "opt_recall": 0.961,
+  "opt_precision": 0.9514851485148514
+}

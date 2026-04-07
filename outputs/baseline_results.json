@@ -1,0 +1,13 @@
+{
+  "model": "Baseline CNN (from scratch)",
+  "parameters": 1239777,
+  "epochs_trained": 30,
+  "best_epoch": 29,
+  "test_accuracy": 0.89735,
+  "test_auc": 0.99215281,
+  "test_f1": 0.8863296605946515,
+  "test_precision": 0.9929289170078154,
+  "test_recall": 0.8004,
+  "best_val_auc": 0.99215281,
+  "opt_threshold": 0.029698492462311557
+}

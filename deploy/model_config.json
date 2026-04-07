@@ -1,0 +1,22 @@
+{
+  "architecture": "EfficientNetB0",
+  "input_size": 224,
+  "threshold": 0.5714,
+  "classes": [
+    "REAL",
+    "FAKE"
+  ],
+  "normalize_mean": [
+    0.485,
+    0.456,
+    0.406
+  ],
+  "normalize_std": [
+    0.229,
+    0.224,
+    0.225
+  ],
+  "test_auc": 0.991,
+  "test_recall": 0.9716,
+  "test_accuracy": 0.951
+}
