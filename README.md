@@ -126,5 +126,3 @@ streamlit run app.py
 
 ## License
 MIT License. See [LICENSE](LICENSE) for details.
-
-*Project completed as part of the 10 Academy Fake Image Detection program, April 2026. Model trained on Kaggle Tesla T4 GPU.*
