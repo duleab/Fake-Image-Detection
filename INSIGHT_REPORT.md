@@ -451,7 +451,7 @@ This project demonstrates that **forensic deep learning** can reliably detect AI
 
 ---
 
-> **Report generated:** April 2026
+
 > **Framework:** PyTorch 2.10.0 | EfficientNetB0 | Grad-CAM
 > **Compute:** NVIDIA Tesla T4 GPU (15.6 GB VRAM)
 
