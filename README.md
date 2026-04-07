@@ -1,4 +1,4 @@
-# Fake Image Detection Project — Forensic Deep Learning Pipeline
+# Fake Image Detection Project Forensic Deep Learning Pipeline
 
 This repository contains an end-to-end computer vision pipeline for detecting AI-generated images using forensic analysis, transfer learning (EfficientNetB0), and Grad-CAM explainability. The project is designed for high-accuracy content moderation, specifically distinguishing between authentic camera photographs and Stable Diffusion generated media.
 
