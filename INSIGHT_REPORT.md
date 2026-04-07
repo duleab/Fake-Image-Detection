@@ -44,8 +44,8 @@ The project follows a rigorous four-task methodology:
 | # | Objective | Success Criterion |
 |---|-----------|-------------------|
 | 1 | Conduct a comprehensive forensic analysis of the CIFAKE dataset to identify discriminative signals between real and AI-generated images | Identification of at least 3 distinct forensic features |
-| 2 | Build a baseline CNN from scratch to establish a performance floor | AUC â‰¥ 0.95, Accuracy â‰¥ 85% |
-| 3 | Develop a transfer learning model that significantly outperforms the baseline, particularly in recall | Recall â‰¥ 95%, well-calibrated threshold near 0.5 |
+| 2 | Build a baseline CNN from scratch to establish a performance floor | AUC ≥ 0.95, Accuracy ≥ 85% |
+| 3 | Develop a transfer learning model that significantly outperforms the baseline, particularly in recall | Recall ≥ 95%, well-calibrated threshold near 0.5 |
 | 4 | Provide model explainability via Grad-CAM and demonstrate that the model detects forensic (not semantic) features | Visual confirmation that activations focus on texture/boundary regions |
 | 5 | Document the model's capabilities, limitations, and ethical considerations via a formal Model Card | Complete Model Card with retraining triggers defined |
 
@@ -364,7 +364,7 @@ The **3.7× stronger center activation** for fake images (0.394 vs. 0.107) provi
 
 ## 9. Comparative Results Summary
 
-| Metric | Baseline CNN | EfficientNet | Î” (Improvement) |
+| Metric | Baseline CNN | EfficientNet | Δ (Improvement) |
 |--------|:------------:|:------------:|:----------------:|
 | **Accuracy (default threshold)** | 89.73% | 95.10% | **+5.37 pp** |
 | **ROC-AUC** | 0.9922 | 0.9910 | −0.0012 |
